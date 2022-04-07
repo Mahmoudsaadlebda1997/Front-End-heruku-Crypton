@@ -1,0 +1,42 @@
+<div class='dashboard'>
+
+  <app-sidenav></app-sidenav>
+
+  <div class='dashboard-app'>
+    <app-admin-header></app-admin-header>
+      <div class='dashboard-content'>
+          <div class='container p-2'>
+            <figure class=" mt-4">
+              <blockquote class="blockquote">
+                <h2 class="text-right">Categories</h2>
+              </blockquote>
+            </figure>
+            <div class="text-right pb-3">
+              <button routerLink="/admin/categories/add" type="submit" class="btn btn-primary btn-sm float-end">Add new category</button>
+            </div>
+
+            <table class="table table-striped mt-5">
+              <thead>
+                <tr>
+                 
+                  <th scope="col">Name</th>
+                  <th scope="col">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let category of categories | paginate: { itemsPerPage:5, currentPage: p }">
+                  <!-- <th scope="row">{{category.id}}</th> -->
+                  <td>{{category.name}}</td>
+                  <td><button type="submit" class="btn btn-danger btn-sm" (click)="deleteData(category.id)">Delete</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <pagination-controls (pageChange)="p = $event" class="float-right"></pagination-controls>
+
+
+          </div>
+      </div>
+  </div>
+</div>
+
+

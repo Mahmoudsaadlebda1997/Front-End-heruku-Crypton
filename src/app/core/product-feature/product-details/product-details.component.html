@@ -1,0 +1,188 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+<!-- Start Top Nav -->
+<!-- Header -->
+<app-navbar></app-navbar>
+<!-- Close Top Nav -->
+<!-- Close Header -->
+
+<!-- Open Content -->
+<section class="bg-light">
+    <div class="container pb-5">
+        <div class="row">
+            <div class="col-lg-5 mt-5">
+                <div class="card mb-3 mt-0" style="height: 39rem;">
+                    <img class="card-img img-fluid" style="height: 39rem;" src="{{imageDirectoryPath}}{{productItem.image}}" alt=" Card image cap " id="product-detail ">
+                </div>
+                <!-- <div class="row ">
+
+                </div> -->
+            </div>
+            <!-- col end -->
+            <div class="col-lg-7 mt-5 ">
+                <div class="card ">
+                    <div class="card-body ">
+                        <div class="d-flex flex-row justify-content-between">
+                            <h1 style="font-weight:bold" class="h2">{{productItem.name}}</h1><br>
+                            <!-- unlike -->
+
+                            <a *ngIf="!productItem.isWished" (click)="addtoWishlist(productItem.id)" class="btn btn-success text-white"><i class="bi bi-heart" ></i></a>
+                            <a *ngIf="productItem.isWished" class="btn btn-success text-white"><i class="bi bi-heart-fill" ></i></a>
+
+                            <!-- <a *ngIf="!addedToWishlist" (click)="addtoWishlist(productItem.id)" class="btn btn-success text-white"><i class="bi bi-heart" ></i></a> -->
+                            <!-- like -->
+                            <!-- <a *ngIf="addedToWishlist" (click)="removeFromWishlist(productItem.id)" class="btn btn-danger text-white"><i class="bi bi-heart-fill" ></i></a> -->
+                        </div>
+                        <div *ngIf="productItem.discount; else elseBlock">
+
+                            <h5 class=" mb-1 text-black mt-2 w-50"><del> Price :${{productItem.price}}</del></h5>
+                            <h5 class="mb-0 text-success ">Price: ${{productItem.price - productItem.discount}}</h5>
+                        </div>
+                        <ng-template #elseBlock>
+                            <h5 class=" mb-1 text-success mt-3 w-50">
+                                Price :${{productItem.price}}</h5>
+                        </ng-template>
+                        <br>
+
+
+                        <!-- If Product  Not in User Order -->
+
+                        <div *ngIf="!productItem.isRated">
+                            <u class="rate-area mx-0">
+                                <a *ngIf="productavgRate == 5"> <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i>
+                                <i class="text-warning fa fa-star"></i> </a>
+                                <a *ngIf="productavgRate == 4"> <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-warning fa fa-star"></i>
+                                    <i class="text-muted fa fa-star"></i> </a>
+                                    <a *ngIf="productavgRate == 3"> <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-warning fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i>
+                                        <i class="text-muted fa fa-star"></i> </a>
+                                        <a *ngIf="productavgRate == 2"> <i class="text-warning fa fa-star"></i>
+                                            <i class="text-warning fa fa-star"></i>
+                                            <i class="text-muted fa fa-star"></i>
+                                            <i class="text-muted fa fa-star"></i>
+                                            <i class="text-muted fa fa-star"></i> </a>
+                                            <a *ngIf="productavgRate == 1"> <i class="text-warning fa fa-star"></i>
+                                                <i class="text-muted fa fa-star"></i>
+                                                <i class="text-muted fa fa-star"></i>
+                                                <i class="text-muted fa fa-star"></i>
+                                                <i class="text-muted fa fa-star"></i> </a>
+                                                <a *ngIf="productavgRate == 0"> <i class="text-muted fa fa-star"></i>
+                                                    <i class="text-muted fa fa-star"></i>
+                                                    <i class="text-muted fa fa-star"></i>
+                                                    <i class="text-muted fa fa-star"></i>
+                                                    <i class="text-muted fa fa-star"></i> </a>
+                                                    <a *ngIf="!productavgRate"> <i class="text-muted fa fa-star"></i>
+                                                        <i class="text-muted fa fa-star"></i>
+                                                        <i class="text-muted fa fa-star"></i>
+                                                        <i class="text-muted fa fa-star"></i>
+                                                        <i class="text-muted fa fa-star"></i> </a>
+                         </u>
+                        <p *ngIf="productavgRate" class="list-inline-item text-dark ms-4 ">Rating : {{productavgRate}} </p>
+                        <p *ngIf="!productavgRate" class="list-inline-item text-dark ms-4 ">Rating : 0 </p>
+                    </div>
+
+                        <!-- If Product in User Order -->
+
+                        <div *ngIf="productItem.isRated">
+                            <form class="needs-validation d-flex flex-row" novalidate (ngSubmit)="insertRate()" [formGroup]="addform" method="post">
+                                <div class="rate needs-validation">
+                                    <input formControlName="rate" type="radio" id="star5" [(ngModel)]="review.rate" name="rate" value="5" />
+                                    <label for="star5" title="text">5 stars</label>
+                                    <input formControlName="rate"  type="radio" id="star4" [(ngModel)]="review.rate" name="rate" value="4" />
+                                    <label for="star4" title="text">4 stars</label>
+                                    <input formControlName="rate"  type="radio" id="star3"[(ngModel)]="review.rate"  name="rate" value="3" />
+                                    <label for="star3" title="text">3 stars</label>
+                                    <input  formControlName="rate" type="radio" id="star2"  name="rate" [(ngModel)]="review.rate" value="2" />
+                                    <label for="star2" title="text">2 stars</label>
+                                    <input formControlName="rate"  type="radio" id="star1" name="rate" [(ngModel)]="review.rate" value="1" />
+                                    <label for="star1" title="text">1 star</label>
+                                    <button class="btn px-1 mx-1 h-75 btn-success btn-xsm " type="submit ">Add Rate</button>
+                                </div>
+                                <span  *ngIf="submmtied && f['rate'].errors">
+
+                                    <p *ngIf="f['rate'].errors['required']" class="text-danger mx-3 fw-bold d-flex fs-5 w-100"> ! Rate is required</p>
+                                  </span>
+                            </form>
+                            <br> <br>
+                        </div>
+                        <ul class="list-inline ">
+                            <li class="list-inline-item ">
+                                <h6>Brand:</h6>
+                            </li>
+                            <li class="list-inline-item ">
+                                <!-- <p class="text-success "><strong *ngFor="let brand of allBrands"> {{brand.name}} </strong> </p> -->
+                                <p class="text-success "><strong>{{productItem.brand.name}}</strong> </p>
+
+                            </li>
+                        </ul>
+
+                        <h6>Description:</h6>
+                        <p> {{productItem.description}} </p>
+                        <ul class="list-inline ">
+                            <li class="list-inline-item ">
+                                <h6>Avaliable Color :</h6>
+                            </li>
+                            <li class="list-inline-item ">
+                                <p class="text-muted "><strong>White / Black</strong></p>
+                            </li>
+                        </ul>
+
+                        <h6>Specification:</h6>
+                        <ul class="list-unstyled pb-3 ">
+                            <li>Fits All People</li>
+                            <li>All-live Warranty</li>
+                            <li>Water-Resistance</li>
+                            <li>Best Materials</li>
+                        </ul>
+                        <form action=" " method="GET ">
+                            <div class="row pb-3 ">
+                                <div class="col d-grid ">
+                                  <button type="submit" class="btn btn-success btn-lg" name="submit" value="addtocard" (click)="addToCart()">Add To Cart</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="separator"></div>
+<!-- related products -->
+<br>
+<section class="realated-product">
+    <h2 class="container-fluid mx-2 text-success mb-4"> Related <strong>Products</strong></h2>
+    <div class="row container-fluid">
+        <!-- medium item -->
+        <app-product-item class="col-2" *ngFor="let item of relatedProducts " [productItem]="item "></app-product-item>
+    </div>
+</section>
+<br>
+
+
+
+
+
+
+<!--Start Carousel Wrapper-->
+<!-- <section class="realated-product ">
+            <h3>Related <strong>Products</strong></h3>
+            <div class="item-listing__items item-listing--4items ">
+                <!-- medium item -->
+<!-- <app-product-item class="item-medium-1 " *ngFor="let item of relatedProducts " [productItem]="item "></app-product-item>
+    </div>
+</section> -->
+<!-- End Slider Script -->
+
+<!-- Start Footer -->
+<app-footer></app-footer>
+<!-- End Footer -->
